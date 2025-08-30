@@ -10,6 +10,7 @@ import {
 import { ENV } from '../config/env.config.js';
 import generateMailOptions from '../utils/mailTemplates.utils.js';
 import transporter from '../config/nodemailer.config.js';
+import passport from '../config/passport.config.js';
 
 //* Controller for registering a user
 const registerUser = async (req, res) => {
@@ -258,6 +259,43 @@ const getUserDetails = async (req, res) => {
   }
 };
 
+const googleAuth = (req, res, next) => {
+  passport.authenticate('google', {
+    session: false,
+    scope: ['profile', 'email'],
+  })(req, res, next);
+};
+
+const googleAuthCallback = (req, res, next) => {
+  passport.authenticate(
+    'google',
+    {
+      session: false,
+      failureRedirect: `${ENV.FRONTEND_URL}/login`,
+    },
+    (err, data) => {
+      if (err) {
+        console.error('Google auth error:', err);
+        return res.redirect(`${ENV.FRONTEND_URL}/login`); // Redirect to login page
+      }
+
+      const { user, token } = data;
+
+      // Store JWT token in cookie (same as regular login)
+      const cookieOptions = {
+        httpOnly: true,
+        sameSite: ENV.NODE_ENV === 'production' ? 'none' : 'strict',
+        secure: ENV.NODE_ENV === 'production',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      };
+      res.cookie('authToken', token, cookieOptions);
+
+      // Redirect to HOME PAGE
+      return res.redirect(`${ENV.FRONTEND_URL}/`);
+    }
+  )(req, res, next);
+};
+
 //* Export controllers
 export {
   registerUser,
@@ -269,4 +307,6 @@ export {
   sendPasswordResetEmail,
   resetPassword,
   getUserDetails,
+  googleAuth,
+  googleAuthCallback,
 };
