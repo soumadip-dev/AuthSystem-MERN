@@ -4,6 +4,8 @@ import githubStrategy from '../strategies/github.strategy.js';
 
 // Use the Google strategy
 passport.use(googleStrategy);
+
+// Use the GitHub strategy
 passport.use(githubStrategy);
 
 // Serialize/Deserialize (optional for JWT, but good to have)
