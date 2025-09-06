@@ -37,6 +37,14 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    googleId: {
+      type: String,
+      default: '',
+    },
+    githubId: {
+      type: String,
+      default: '',
+    },
   },
   { timestamps: true }
 );

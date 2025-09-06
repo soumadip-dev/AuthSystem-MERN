@@ -11,6 +11,8 @@ import {
   getUserDetails,
   googleAuth,
   googleAuthCallback,
+  githubAuth,
+  githubAuthCallback,
 } from '../controller/user.controller.js';
 import { userAuth } from '../middleware/user.middleware.js';
 
@@ -29,6 +31,8 @@ router.post('/reset-password', resetPassword);
 router.get('/user-details', userAuth, getUserDetails);
 router.get('/auth/google', googleAuth);
 router.get('/auth/google/callback', googleAuthCallback);
+router.get('/auth/github', githubAuth);
+router.get('/auth/github/callback', githubAuthCallback);
 
 //* Export the router
 export default router;
