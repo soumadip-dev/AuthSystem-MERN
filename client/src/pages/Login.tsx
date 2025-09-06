@@ -1,6 +1,6 @@
 import { useState, type FC, useContext, useEffect } from 'react';
 import { assets } from '../assets/assets';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Loader2, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type { PasswordChecks, RegisterCredentials, LoginCredentials } from '../types/global';
 import { toast } from 'react-toastify';
@@ -23,8 +23,12 @@ const Login: FC = () => {
 
   // Google Login Handler
   const handleGoogleLogin = () => {
-    // Backend ke Google OAuth endpoint pe redirect karenge
     window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/auth/google`;
+  };
+
+  // Github Login Handler
+  const handleGithubLogin = () => {
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/auth/github`;
   };
 
   const handleRegister = async (credentials: RegisterCredentials) => {
@@ -130,226 +134,263 @@ const Login: FC = () => {
         onClick={() => navigate('/')}
         src={assets.logo}
         alt="logo"
-        className="absolute left-5 sm:left-20 top-5 w-28 sm:w-32 cursor-pointer hover:scale-105 transition-transform"
+        className="absolute left-5 sm:left-20 top-5 w-28 sm:w-32 cursor-pointer hover:scale-105 transition-transform duration-300 z-10"
       />
 
-      <div className="bg-slate-900/90 backdrop-blur-sm p-6 sm:p-8 rounded-xl shadow-2xl w-full sm:w-96 text-indigo-200">
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold mb-2 text-white bg-gradient-to-r from-indigo-300 to-purple-400 bg-clip-text">
-            {state === 'signup' ? 'Create Account' : 'Welcome Back'}
-          </h2>
-          <p className="text-sm text-indigo-300/80">
-            {state === 'signup' ? 'Join us today!' : 'Login to continue your journey'}
-          </p>
-        </div>
+      <div className="bg-slate-900/90 backdrop-blur-md p-8 sm:p-10 rounded-2xl shadow-2xl w-full sm:w-96 text-indigo-200 border border-indigo-800/30 relative overflow-hidden">
+        {/* Futuristic accent elements */}
+        <div className="absolute -top-20 -left-20 w-40 h-40 bg-purple-500/10 rounded-full blur-xl"></div>
+        <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-indigo-500/10 rounded-full blur-xl"></div>
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          {state === 'signup' && (
-            <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#333A5C]/80 focus-within:bg-[#333A5C] focus-within:ring-2 focus-within:ring-indigo-500">
-              <img src={assets.person_icon} alt="person" className="w-4 opacity-80" />
-              <input
-                type="text"
-                placeholder="Full Name"
-                required
-                className="bg-transparent outline-none w-full placeholder-indigo-300/50 text-white"
-                value={name}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                disabled={isSubmitting}
-              />
-            </div>
-          )}
-
-          <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#333A5C]/80 focus-within:bg-[#333A5C] focus-within:ring-2 focus-within:ring-indigo-500">
-            <img src={assets.mail_icon} alt="email" className="w-4 opacity-80" />
-            <input
-              type="email"
-              placeholder="Email address"
-              required
-              className="bg-transparent outline-none w-full placeholder-indigo-300/50 text-white"
-              value={email}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-              disabled={isSubmitting}
-            />
-          </div>
-
-          <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#333A5C]/80 focus-within:bg-[#333A5C] focus-within:ring-2 focus-within:ring-indigo-500">
-            <img src={assets.lock_icon} alt="password" className="w-4 opacity-80" />
-            <input
-              type={showPassword ? 'text' : 'password'}
-              placeholder="Password"
-              required
-              className="bg-transparent outline-none w-full placeholder-indigo-300/50 text-white"
-              value={password}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-              disabled={isSubmitting}
-            />
+        {/* Card structure with tabs */}
+        <div className="relative z-10">
+          <div className="flex mb-8 border-b border-indigo-700/30">
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              aria-label={showPassword ? 'Hide password' : 'Show password'}
-              className={`text-indigo-300 hover:text-indigo-200 ${
-                isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
+              onClick={() => !isSubmitting && setState('signup')}
+              className={`flex-1 py-3 text-center font-medium transition-all duration-300 ${
+                state === 'signup'
+                  ? 'text-white border-b-2 border-purple-400'
+                  : 'text-indigo-400 hover:text-indigo-300'
+              } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
               disabled={isSubmitting}
             >
-              {isSubmitting ? (
-                <svg
-                  className="animate-spin h-5 w-5 text-indigo-300"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-              ) : showPassword ? (
-                <EyeOff size={18} />
-              ) : (
-                <Eye size={18} />
-              )}
+              Sign Up
+            </button>
+            <button
+              type="button"
+              onClick={() => !isSubmitting && setState('login')}
+              className={`flex-1 py-3 text-center font-medium transition-all duration-300 ${
+                state === 'login'
+                  ? 'text-white border-b-2 border-purple-400'
+                  : 'text-indigo-400 hover:text-indigo-300'
+              } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={isSubmitting}
+            >
+              Login
             </button>
           </div>
 
-          {/* Password Strength Meter (only shown during signup) */}
-          {state === 'signup' && (
-            <div className="mt-2">
-              <div className="flex justify-between text-xs text-indigo-300">
-                <span>Password strength</span>
-                <span className={getStrengthLabel().color}>{getStrengthLabel().text}</span>
-              </div>
-              <div
-                className="w-full h-1.5 bg-indigo-900/70 rounded-full mt-1.5 overflow-hidden"
-                role="progressbar"
-                aria-valuenow={strength}
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-label="Password strength meter"
-              >
-                <div
-                  className={`h-full rounded-full ${getStrengthMeterColor()}`}
-                  style={{ width: `${strength}%` }}
-                ></div>
-              </div>
-
-              {/* Password Requirements */}
-              <ul className="mt-3 text-xs text-indigo-300/80 space-y-1">
-                <li className={passwordChecks.length ? 'text-emerald-400' : ''}>
-                  {passwordChecks.length ? '✓' : '✗'} At least 8 characters
-                </li>
-                <li className={passwordChecks.upper ? 'text-emerald-400' : ''}>
-                  {passwordChecks.upper ? '✓' : '✗'} Contains Uppercase letter
-                </li>
-                <li className={passwordChecks.lower ? 'text-emerald-400' : ''}>
-                  {passwordChecks.lower ? '✓' : '✗'} Contains Lowercase letter
-                </li>
-                <li className={passwordChecks.number ? 'text-emerald-400' : ''}>
-                  {passwordChecks.number ? '✓' : '✗'} Contains a number
-                </li>
-                <li className={passwordChecks.special ? 'text-emerald-400' : ''}>
-                  {passwordChecks.special ? '✓' : '✗'} Contains Special character
-                </li>
-              </ul>
-            </div>
-          )}
-
-          {state === 'login' && (
-            <div className="flex justify-end">
-              <button
-                type="button"
-                className="text-xs text-indigo-400 hover:text-indigo-300"
-                onClick={() => navigate('/reset-password')}
-                disabled={isSubmitting}
-              >
-                Forgot Password?
-              </button>
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-indigo-500/30 active:scale-[0.98] transition-all ${
-              isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
-            }`}
-          >
-            {isSubmitting ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg
-                  className="animate-spin h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                {state === 'signup' ? 'Signing Up...' : 'Logging In...'}
-              </span>
-            ) : state === 'signup' ? (
-              'Sign Up'
-            ) : (
-              'Login'
-            )}
-          </button>
-
-          <div
-            className={`text-center pt-4 ${
-              state === 'signup' ? 'bg-[#333A5C]/40 -mx-6 -mb-6 px-6 py-4 rounded-b-xl' : ''
-            }`}
-          >
-            <p className="text-sm text-indigo-300">
-              {state === 'signup' ? 'Already have an account?' : "Don't have an account?"}{' '}
-              <button
-                type="button"
-                onClick={() => !isSubmitting && setState(state === 'signup' ? 'login' : 'signup')}
-                className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2"
-                disabled={isSubmitting}
-              >
-                {state === 'signup' ? 'Login' : 'Sign Up'}
-              </button>
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold mb-2 text-white">
+              {state === 'signup' ? 'Create Your Account' : 'Welcome Back'}
+            </h2>
+            <p className="text-sm text-indigo-300/80">
+              {state === 'signup' ? 'Join us today!' : 'Sign in to continue your journey'}
             </p>
           </div>
-        </form>
-        <div className="mt-6">
-          <div className="relative flex items-center justify-center mb-4">
-            <div className="flex-grow border-t border-indigo-400/30"></div>
-            <span className="mx-4 text-sm text-indigo-300/80">or continue with</span>
-            <div className="flex-grow border-t border-indigo-400/30"></div>
-          </div>
 
-          <button
-            type="button"
-            onClick={handleGoogleLogin}
-            disabled={isSubmitting}
-            className={`w-full py-3 rounded-xl bg-white text-gray-800 font-medium border border-gray-300 hover:bg-gray-50 shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3 ${
-              isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
-            }`}
-          >
-            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
-            Continue with Google
-          </button>
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            {state === 'signup' && (
+              <div className="group">
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-800/70 border border-indigo-700/30 focus-within:bg-slate-800 focus-within:ring-2 focus-within:ring-indigo-500/50 focus-within:border-indigo-500 transition-all duration-300">
+                  <img src={assets.person_icon} alt="person" className="w-4 opacity-80" />
+                  <input
+                    type="text"
+                    placeholder="Full Name"
+                    required
+                    className="bg-transparent outline-none w-full placeholder-indigo-300/50 text-white"
+                    value={name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                    disabled={isSubmitting}
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="group">
+              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-800/70 border border-indigo-700/30 focus-within:bg-slate-800 focus-within:ring-2 focus-within:ring-indigo-500/50 focus-within:border-indigo-500 transition-all duration-300">
+                <img src={assets.mail_icon} alt="email" className="w-4 opacity-80" />
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  required
+                  className="bg-transparent outline-none w-full placeholder-indigo-300/50 text-white"
+                  value={email}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                  disabled={isSubmitting}
+                />
+              </div>
+            </div>
+
+            <div className="group">
+              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-800/70 border border-indigo-700/30 focus-within:bg-slate-800 focus-within:ring-2 focus-within:ring-indigo-500/50 focus-within:border-indigo-500 transition-all duration-300">
+                <img src={assets.lock_icon} alt="password" className="w-4 opacity-80" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Password"
+                  required
+                  className="bg-transparent outline-none w-full placeholder-indigo-300/50 text-white"
+                  value={password}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                  disabled={isSubmitting}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  className={`text-indigo-300 hover:text-indigo-200 transition-colors ${
+                    isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <Loader2 size={18} className="animate-spin" />
+                  ) : showPassword ? (
+                    <EyeOff size={18} />
+                  ) : (
+                    <Eye size={18} />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Password Strength Meter (only shown during signup) */}
+            {state === 'signup' && (
+              <div className="mt-3 p-4 rounded-xl bg-slate-800/60 border border-indigo-700/20">
+                <div className="flex justify-between text-xs text-indigo-300 mb-2">
+                  <span>Password strength</span>
+                  <span className={`font-medium ${getStrengthLabel().color}`}>
+                    {getStrengthLabel().text}
+                  </span>
+                </div>
+                <div
+                  className="w-full h-1.5 bg-indigo-900/70 rounded-full overflow-hidden mb-3"
+                  role="progressbar"
+                  aria-valuenow={strength}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label="Password strength meter"
+                >
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ${getStrengthMeterColor()} shadow-md`}
+                    style={{ width: `${strength}%` }}
+                  ></div>
+                </div>
+
+                {/* Password Requirements */}
+                <div className="grid grid-cols-2 gap-2 text-xs text-indigo-300/80">
+                  <div
+                    className={`flex items-center ${
+                      passwordChecks.length ? 'text-emerald-400' : ''
+                    }`}
+                  >
+                    <span className="mr-1.5">{passwordChecks.length ? '✓' : '•'}</span>
+                    8+ characters
+                  </div>
+                  <div
+                    className={`flex items-center ${
+                      passwordChecks.upper ? 'text-emerald-400' : ''
+                    }`}
+                  >
+                    <span className="mr-1.5">{passwordChecks.upper ? '✓' : '•'}</span>
+                    Uppercase
+                  </div>
+                  <div
+                    className={`flex items-center ${
+                      passwordChecks.lower ? 'text-emerald-400' : ''
+                    }`}
+                  >
+                    <span className="mr-1.5">{passwordChecks.lower ? '✓' : '•'}</span>
+                    Lowercase
+                  </div>
+                  <div
+                    className={`flex items-center ${
+                      passwordChecks.number ? 'text-emerald-400' : ''
+                    }`}
+                  >
+                    <span className="mr-1.5">{passwordChecks.number ? '✓' : '•'}</span>
+                    Number
+                  </div>
+                  <div
+                    className={`flex items-center col-span-2 ${
+                      passwordChecks.special ? 'text-emerald-400' : ''
+                    }`}
+                  >
+                    <span className="mr-1.5">{passwordChecks.special ? '✓' : '•'}</span>
+                    Special character
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {state === 'login' && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors flex items-center"
+                  onClick={() => navigate('/reset-password')}
+                  disabled={isSubmitting}
+                >
+                  Forgot Password? <ChevronRight size={14} className="ml-0.5" />
+                </button>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-indigo-500/30 active:scale-[0.98] transition-all duration-300 relative overflow-hidden group ${
+                isSubmitting ? 'opacity-80 cursor-not-allowed' : ''
+              }`}
+            >
+              <span className="absolute inset-0 bg-white/10 group-hover:bg-white/5 transition-all duration-300 transform -skew-x-12 -translate-x-full group-hover:translate-x-full"></span>
+              {isSubmitting ? (
+                <span className="flex items-center justify-center gap-2 relative">
+                  <Loader2 size={20} className="animate-spin" />
+                  {state === 'signup' ? 'Creating Account...' : 'Logging In...'}
+                </span>
+              ) : state === 'signup' ? (
+                <span className="relative">Create Account</span>
+              ) : (
+                <span className="relative">Sign In</span>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-8">
+            <div className="relative flex items-center justify-center mb-5">
+              <div className="flex-grow border-t border-indigo-400/30"></div>
+              <span className="mx-4 text-sm text-indigo-300/80">or continue with</span>
+              <div className="flex-grow border-t border-indigo-400/30"></div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={handleGoogleLogin}
+                disabled={isSubmitting}
+                className={`py-3 rounded-xl bg-white/95 text-gray-800 font-medium border border-gray-300/50 hover:bg-white shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2 relative overflow-hidden group ${
+                  isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
+              >
+                <span className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-all duration-300"></span>
+                <img
+                  src="https://www.google.com/favicon.ico"
+                  alt="Google"
+                  className="w-5 h-5 relative z-10"
+                />
+                <span className="text-sm relative z-10">Google</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleGithubLogin}
+                disabled={isSubmitting}
+                className={`py-3 rounded-xl bg-gray-800 text-white font-medium border border-gray-700 hover:bg-gray-900 shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2 relative overflow-hidden group ${
+                  isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
+              >
+                <span className="absolute inset-0 bg-white/5 group-hover:bg-white/0 transition-all duration-300"></span>
+                <img
+                  src="https://github.com/favicon.ico"
+                  alt="Github"
+                  className="w-5 h-5 relative z-10"
+                />
+                <span className="text-sm relative z-10">GitHub</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
