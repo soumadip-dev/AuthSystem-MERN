@@ -9,6 +9,8 @@ import {
   sendPasswordResetEmail,
   resetPassword,
   getUserDetails,
+  googleAuth,
+  googleAuthCallback,
 } from '../controller/user.controller.js';
 import { userAuth } from '../middleware/user.middleware.js';
 
@@ -25,6 +27,8 @@ router.get('/is-auth', userAuth, isAuthenticated);
 router.post('/send-pass-reset-email', sendPasswordResetEmail);
 router.post('/reset-password', resetPassword);
 router.get('/user-details', userAuth, getUserDetails);
+router.get('/auth/google', googleAuth);
+router.get('/auth/google/callback', googleAuthCallback);
 
 //* Export the router
 export default router;
