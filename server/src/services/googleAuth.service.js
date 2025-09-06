@@ -1,4 +1,6 @@
 import User from '../model/User.model.js';
+import jwt from 'jsonwebtoken';
+import { ENV } from '../config/env.config.js';
 
 export const handleGoogleAuth = async profile => {
   try {
@@ -23,11 +25,12 @@ export const handleGoogleAuth = async profile => {
       user.isVerified = true;
       await user.save();
     }
+
     // Generate JWT token
     const token = jwt.sign({ id: user._id }, ENV.JWT_SECRET, { expiresIn: '7d' });
 
     return { user, token };
   } catch (error) {
-    throw new Error('Google authentication failed');
+    throw new Error('Google authentication failed: ' + error.message);
   }
 };

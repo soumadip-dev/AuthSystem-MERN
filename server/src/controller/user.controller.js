@@ -273,25 +273,32 @@ const googleAuthCallback = (req, res, next) => {
       session: false,
       failureRedirect: `${ENV.FRONTEND_URL}/login`,
     },
-    (err, data) => {
+    async (err, data) => {
       if (err) {
         console.error('Google auth error:', err);
-        return res.redirect(`${ENV.FRONTEND_URL}/login`); // Redirect to login page
+        return res.redirect(`${ENV.FRONTEND_URL}/login`);
       }
 
-      const { user, token } = data;
+      try {
+        const { user, token } = data;
 
-      // Store JWT token in cookie (same as regular login)
-      const cookieOptions = {
-        httpOnly: true,
-        sameSite: ENV.NODE_ENV === 'production' ? 'none' : 'strict',
-        secure: ENV.NODE_ENV === 'production',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      };
-      res.cookie('authToken', token, cookieOptions);
+        // Store JWT token in cookie (same as regular login)
+        const cookieOptions = {
+          httpOnly: true,
+          sameSite: ENV.NODE_ENV === 'production' ? 'none' : 'strict',
+          secure: ENV.NODE_ENV === 'production',
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+        };
 
-      // Redirect to HOME PAGE
-      return res.redirect(`${ENV.FRONTEND_URL}/`);
+        // Set the cookie
+        res.cookie('authToken', token, cookieOptions);
+
+        // Redirect to home page
+        return res.redirect(`${ENV.FRONTEND_URL}/`);
+      } catch (error) {
+        console.error('Error in google callback:', error);
+        return res.redirect(`${ENV.FRONTEND_URL}/login`);
+      }
     }
   )(req, res, next);
 };
