@@ -8,31 +8,42 @@
   A secure MERN authentication system with user registration, email verification, login, logout, password reset, profile management, and OAuth integration.
 </p>
 
-| Register Page                                                                   | Login Page                                                                |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| <img src="./client/public/registerPage_ss.png" alt="Register Page" width="400"> | <img src="./client/public/loginPage_ss.png" alt="Login Page" width="400"> |
+<table align="center">
+  <tr>
+    <th>Register Page</th>
+    <th>Login Page</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="./client/public/registerPage_ss.png" alt="Register Page">
+    </td>
+    <td align="center">
+      <img src="./client/public/loginPage_ss.png" alt="Login Page">
+    </td>
+  </tr>
+</table>
 
 ## 🌟 Features
 
-- **User Registration** 📝: Register new users with name, email, and password.
-- **Email Verification** ✉️: Send verification emails for account activation.
-- **Secure Login** 🔒: Authenticate users via email/password using JWT (JSON Web Tokens).
-- **OAuth Integration** 🔗: Login with Google and GitHub using Passport.js.
-- **Forgot Password** 🔑: Request a password reset link via email.
-- **Reset Password** 🔄: Securely reset passwords using a time-limited token.
-- **Logout** 🚪: Invalidate JWT tokens to log users out securely.
-- **Password Hashing** ⚡: bcrypt-based hashing for secure password storage.
-- **Email Notifications** 📧: Nodemailer-powered emails for verification and password resets.
-- **Responsive UI** 📱: Built with Tailwind CSS for a responsive and visually appealing interface.
+- **👤 User Registration** – Sign up with name, email, and secure password
+- **✉️ Email Verification** – Account activation via secure verification links
+- **🔐 Secure Login** – JWT-based authentication for email/password login
+- **🔗 OAuth Integration** – Seamless login with Google and GitHub
+- **🔑 Forgot Password** – Request a secure password reset link via email
+- **🔄 Reset Password** – Update password using a time-limited token
+- **🚪 Secure Logout** – Invalidate JWT tokens on user logout
+- **⚡ Password Hashing** – bcrypt encryption for secure password storage
+- **📧 Email Notifications** – Nodemailer-powered emails for verification and password resets
+- **📱 Responsive UI** – Tailwind CSS for a clean, mobile-friendly interface
 
-## 🛠️ Tech Stack
+## ⚙️ Tech Stack
 
-- **Frontend**: React, Tailwind CSS, Tanstack Query, React Router
-- **Backend**: Node.js with Express – RESTful API structure
-- **Database**: MongoDB with Mongoose – flexible document-based storage
-- **Email Service**: Nodemailer
-- **SMTP Server**: Brevo
-- **OAuth**: Passport.js with Google and GitHub strategies
+- **🎨 Frontend**: React, Tailwind CSS, React Router
+- **🚀 Backend**: Node.js, Express.js
+- **🗄 Database**: MongoDB, Mongoose
+- **📧 Email Service**: Nodemailer, Brevo SMTP
+- **🔐 OAuth**: Passport.js (Google & GitHub strategies)
+- **🪙 Tokens**: JWT (JSON Web Tokens)
 
 ## 🛠️ Installation & Setup
 
