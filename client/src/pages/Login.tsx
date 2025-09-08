@@ -21,6 +21,12 @@ const Login: FC = () => {
   if (!context) throw new Error('Login must be used within an AppContextProvider');
   const { isLoggedIn, checkAuthAndFetchUser } = context;
 
+  // Google Login Handler
+  const handleGoogleLogin = () => {
+    // Backend ke Google OAuth endpoint pe redirect karenge
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/auth/google`;
+  };
+
   const handleRegister = async (credentials: RegisterCredentials) => {
     try {
       setIsSubmitting(true);
@@ -326,6 +332,25 @@ const Login: FC = () => {
             </p>
           </div>
         </form>
+        <div className="mt-6">
+          <div className="relative flex items-center justify-center mb-4">
+            <div className="flex-grow border-t border-indigo-400/30"></div>
+            <span className="mx-4 text-sm text-indigo-300/80">or continue with</span>
+            <div className="flex-grow border-t border-indigo-400/30"></div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            disabled={isSubmitting}
+            className={`w-full py-3 rounded-xl bg-white text-gray-800 font-medium border border-gray-300 hover:bg-gray-50 shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3 ${
+              isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+            }`}
+          >
+            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
+            Continue with Google
+          </button>
+        </div>
       </div>
     </div>
   );
