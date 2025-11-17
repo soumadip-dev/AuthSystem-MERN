@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  User Authentication System (MERN) 🔐
+  Authentication System 🔐
   <br>
 </h1>
 
