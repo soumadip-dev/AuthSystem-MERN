@@ -23,7 +23,13 @@
   </tr>
 </table>
 
-## 🌟 Features
+---
+
+## 🎬 Demo Video
+
+[Authentication System](https://www.linkedin.com/posts/soumadip-majila-dgp_added-google-github-oauth-to-my-mern-auth-activity-7370342944630964224-gHFl?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAD1aMJQBxnv5DdAHrtZuCweFePs_SWP_DFE)
+
+## 🔋 Features
 
 - **👤 User Registration** – Sign up with name, email, and secure password
 - **✉️ Email Verification** – Account activation via secure verification links
@@ -45,7 +51,7 @@
 - **🔐 OAuth**: Passport.js (Google & GitHub strategies)
 - **🪙 Tokens**: JWT (JSON Web Tokens)
 
-## 🛠️ Installation & Setup
+## 🤸 Installation
 
 ### Prerequisites
 
@@ -60,8 +66,8 @@
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/soumadip-dev/AuthSystem-MERN.git
-   cd AuthSystem-MERN
+   git clone https://github.com/soumadip-dev/AuthSystem.git
+   cd AuthSystem
    ```
 
 2. **Backend Setup**
